@@ -1,8 +1,21 @@
 const path = require('path');
 
 const SERVER_BUILD_PATH = path.resolve(__dirname, '../../public/assets/server.js');
-const renderApplication = require(SERVER_BUILD_PATH).default; // eslint-disable-line
 
-module.exports = (app) => {
-  app.get('*', renderApplication);
+let renderApplication = require(SERVER_BUILD_PATH); // eslint-disable-line
+
+module.exports = (app, DEV_MODE) => {
+  // Send all requests to our server-side application handler, which will render our application
+  // or respond appropriately otherwise, e.g. with redirections or error messages
+  if (DEV_MODE) {
+    // In development mode we want to require (and nuke the cache) with every request
+    // to ensure that the latest built code is sent over the wire (to ensure checksum match)
+    app.get('*', (req, res) => {
+      renderApplication = require(SERVER_BUILD_PATH); // eslint-disable-line
+      delete require.cache[SERVER_BUILD_PATH];
+      renderApplication(req, res);
+    });
+  } else {
+    app.get('*', renderApplication);
+  }
 };

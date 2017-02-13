@@ -2,7 +2,8 @@
   "verbose": false,
   "ext": "js,jsx",
   "watch": [
-    "app",
+    "app/client",
+    "app/server",
     "server",
     "webpack"
   ],

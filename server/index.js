@@ -1,3 +1,5 @@
+/* eslint-disable global-require */
+
 const express = require('express');
 const webpack = require('webpack');
 
@@ -6,21 +8,30 @@ const app = express();
 const DEV_MODE = process.env.NODE_ENV === 'development';
 
 if (DEV_MODE) {
-  /* eslint-disable global-require */
-  const config = require('../webpack/webpack.config.dev-client.js');
-  const compiler = webpack(config);
+  const WebpackDevMiddleware = require('webpack-dev-middleware');
+  const WebpackHotMiddleware = require('webpack-hot-middleware');
+  const config = require('../webpack/webpack.config.dev.js');
 
-  app.use(require('webpack-dev-middleware')(compiler, {
+  const clientWebpack = webpack(config.client);
+  const serverWebpack = webpack(config.server);
+
+  // Rebuild server-side to ensure fresh bundle is sent down the pipe
+  app.use(WebpackDevMiddleware(serverWebpack, {
     noInfo: true,
-    publicPath: config.output.publicPath,
   }));
-  /* eslint-enable global-require */
+
+  // Update client-side bundle for dev server
+  app.use(WebpackDevMiddleware(clientWebpack, {
+    noInfo: true,
+    publicPath: config.PUBLIC_PATH,
+  }));
+
+  // Support hot-reloading for client-side application
+  app.use(WebpackHotMiddleware(clientWebpack));
 }
 
-// Bootstrap application settings
+// Bootstrap application settings and routes
 require('./config/express')(app);
-
-// Bootstrap routes
-require('./config/routes')(app);
+require('./config/routes')(app, DEV_MODE);
 
 app.listen(app.get('port'));
