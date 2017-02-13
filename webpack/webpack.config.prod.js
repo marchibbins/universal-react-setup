@@ -1,14 +1,30 @@
+/*
+ * Production [Webpack configuration](https://webpack.github.io/docs/configuration.html)
+ */
+
 const path = require('path');
 
+// Paths
 const APP_PATH = path.join(__dirname, '../app');
 const ASSETS_PATH = path.join(__dirname, '../public/assets');
+
+const commonExtensions = [
+  '',
+  '.js',
+  '.jsx',
+];
 
 const commonLoaders = [
   {
     test: /\.js$|\.jsx$/,
     loader: 'babel',
     query: {
-      presets: ['es2015', 'react', 'stage-2'],
+      // Read more: http://babeljs.io/docs/plugins/#presets
+      presets: [
+        'es2015',
+        'react',
+        'stage-2', // TC39 categorises experimental proposals in stages
+      ],
     },
     include: APP_PATH,
     exclude: /node_modules/,
@@ -17,8 +33,8 @@ const commonLoaders = [
 
 module.exports = [
   {
+    // Client-side rendering configuration
     name: 'browser',
-    devtool: 'source-map',
     context: APP_PATH,
     entry: {
       app: './client',
@@ -28,22 +44,22 @@ module.exports = [
       filename: '[name].js',
       publicPath: '/assets/',
     },
+    devtool: 'source-map',
     module: {
       loaders: commonLoaders,
     },
     resolve: {
-      extensions: ['', '.js', '.jsx'],
-      modulesDirectories: [
-        'app', 'node_modules',
-      ],
+      extensions: commonExtensions,
     },
-  }, {
+  },
+  {
+    // Server-side rendering configuration
     name: 'server',
+    target: 'node',
     context: APP_PATH,
     entry: {
       server: './server',
     },
-    target: 'node',
     output: {
       path: ASSETS_PATH,
       filename: 'server.js',
@@ -54,10 +70,7 @@ module.exports = [
       loaders: commonLoaders,
     },
     resolve: {
-      extensions: ['', '.js', '.jsx'],
-      modulesDirectories: [
-        'app', 'node_modules',
-      ],
+      extensions: commonExtensions,
     },
   },
 ];

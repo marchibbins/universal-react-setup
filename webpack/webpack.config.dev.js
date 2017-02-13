@@ -1,17 +1,35 @@
+/*
+ * Development [Webpack configuration](https://webpack.github.io/docs/configuration.html)
+ */
+
 const path = require('path');
-const WriteFilePlugin = require('write-file-webpack-plugin');
 const webpack = require('webpack');
 
+// Plugins
+const WriteFilePlugin = require('write-file-webpack-plugin');
+
+// Paths
 const APP_PATH = path.join(__dirname, '../app');
 const ASSETS_PATH = path.join(__dirname, '../public/assets');
 const PUBLIC_PATH = '/assets/';
+
+const commonExtensions = [
+  '',
+  '.js',
+  '.jsx',
+];
 
 const commonLoaders = [
   {
     test: /\.js$|\.jsx$/,
     loader: 'babel',
     query: {
-      presets: ['es2015', 'react', 'stage-2'],
+      // Read more: http://babeljs.io/docs/plugins/#presets
+      presets: [
+        'es2015',
+        'react',
+        'stage-2', // TC39 categorises experimental proposals in stages
+      ],
     },
     include: APP_PATH,
     exclude: /node_modules/,
@@ -19,6 +37,7 @@ const commonLoaders = [
 ];
 
 const client = {
+  // Client-side rendering configuration
   name: 'client',
   context: APP_PATH,
   entry: {
@@ -37,7 +56,7 @@ const client = {
     loaders: commonLoaders,
   },
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: commonExtensions,
   },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
@@ -47,9 +66,10 @@ const client = {
 };
 
 const server = {
+  // Server-side rendering configuration
   name: 'server',
-  context: APP_PATH,
   target: 'node',
+  context: APP_PATH,
   entry: {
     server: './server',
   },
@@ -68,7 +88,7 @@ const server = {
     new WriteFilePlugin(),
   ],
   resolve: {
-    extensions: ['', '.js', '.jsx'],
+    extensions: commonExtensions,
   },
 };
 
