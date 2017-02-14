@@ -43,6 +43,12 @@ const commonPlugins = [
   new webpack.optimize.OccurenceOrderPlugin(), // Assign module and chunk IDs by occurrence
   new webpack.NoErrorsPlugin(), // Don't compile assets when errors]
   new ExtractTextPlugin('main.css'), // In production each CSS chunk is extracted to a separate CSS output ffile
+  new webpack.optimize.UglifyJsPlugin({ // Minify Javascript
+    compress: {
+      screw_ie8: true,
+      warnings: false,
+    },
+  }),
 ];
 
 // Configure [PostCSS](https://github.com/postcss/postcss)
