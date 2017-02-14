@@ -16,12 +16,13 @@ const PostCSSSimpleVars = require('postcss-simple-vars');
 const APP_PATH = path.join(__dirname, '../app');
 const ASSETS_PATH = path.join(__dirname, '../public/assets');
 
-// Loaders used by both client and server builds
+// Loaders used by both client and server builds to transform files
+// Read more [Webpack Loaders](https://webpack.github.io/docs/loaders.html)
 const commonLoaders = [
   {
     test: /\.js$/,
     include: APP_PATH,
-    loader: 'babel',
+    loader: 'babel', // Transpile ES6 -> ES5 with [Babel](https://babeljs.io/)
     query: {
       // Read more: http://babeljs.io/docs/plugins/#presets
       presets: [
@@ -39,14 +40,19 @@ const commonLoaders = [
 ];
 
 // Plugins used by both client and server builds
+// Read more [Webpack plugins](https://webpack.github.io/docs/list-of-plugins.html)
 const commonPlugins = [
   new webpack.optimize.OccurenceOrderPlugin(), // Assign module and chunk IDs by occurrence
-  new webpack.NoErrorsPlugin(), // Don't compile assets when errors]
+  new webpack.NoErrorsPlugin(), // Don't compile assets when errors
+  new webpack.DefinePlugin({ // Create global constants for use in JS
+    'process.env': {
+      NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+    },
+  }),
   new webpack.optimize.DedupePlugin(),
-  new ExtractTextPlugin('main.css'), // In production each CSS chunk is extracted to a separate CSS output ffile
+  new ExtractTextPlugin('styles.css'), // In production each CSS chunk is extracted to a separate CSS output ffile
   new webpack.optimize.UglifyJsPlugin({ // Minify Javascript
     compress: {
-      screw_ie8: true,
       warnings: false,
     },
   }),
@@ -72,7 +78,8 @@ module.exports = [
     },
     output: {
       path: ASSETS_PATH,
-      filename: '[name].js',
+      filename: 'bundle.js',
+      sourceMapFilename: 'bundle.map.js',
       publicPath: '/assets/',
     },
     devtool: 'source-map',

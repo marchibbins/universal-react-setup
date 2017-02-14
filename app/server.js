@@ -11,12 +11,12 @@ const renderPage = renderedContent =>
   <head>
     <title>Hello world</title>
     ${process.env.NODE_ENV === 'production'
-      ? '<link rel="stylesheet" href="/assets/main.css">'
+      ? '<link rel="stylesheet" href="/assets/styles.css">'
       : /* Styles are loaded inline during development by JS modules */ ''}
   </head>
   <body>
     <div id="app">${renderedContent}</div>
-    <script type="text/javascript" src="/assets/app.js"></script>
+    <script type="text/javascript" src="/assets/bundle.js"></script>
   </body>
   </html>`;
 

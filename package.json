@@ -3,7 +3,7 @@
   "scripts": {
     "build": "npm run clean && npm run build:prod",
     "build:dev": "NODE_ENV=development webpack --colors --config ./webpack/webpack.config.dev.js",
-    "build:prod": "NODE_ENV=production webpack --colors --config ./webpack/webpack.config.prod.js",
+    "build:prod": "NODE_ENV=production webpack --colors --config ./webpack/webpack.config.prod.js -p",
     "clean": "rm -rf ./public",
     "start": "npm run start:prod",
     "start:dev": "NODE_ENV=development nodemon ./server/index.js",
