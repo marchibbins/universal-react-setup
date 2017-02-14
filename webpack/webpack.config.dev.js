@@ -13,15 +13,9 @@ const APP_PATH = path.join(__dirname, '../app');
 const ASSETS_PATH = path.join(__dirname, '../public/assets');
 const PUBLIC_PATH = '/assets/';
 
-const commonExtensions = [
-  '',
-  '.js',
-  '.jsx',
-];
-
 const commonLoaders = [
   {
-    test: /\.js$|\.jsx$/,
+    test: /\.js$/,
     loader: 'babel',
     query: {
       // Read more: http://babeljs.io/docs/plugins/#presets
@@ -55,9 +49,6 @@ const client = {
   module: {
     loaders: commonLoaders,
   },
-  resolve: {
-    extensions: commonExtensions,
-  },
   plugins: [
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -87,9 +78,6 @@ const server = {
     // in order to ensure the latest is served without restarting Express
     new WriteFilePlugin(),
   ],
-  resolve: {
-    extensions: commonExtensions,
-  },
 };
 
 module.exports = {

@@ -1,6 +1,5 @@
 {
   "verbose": false,
-  "ext": "js,jsx",
   "watch": [
     "app/client",
     "app/server",

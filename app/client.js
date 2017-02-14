@@ -30,7 +30,7 @@ if (module.hot) {
     }
   };
   // Use routes as dependency
-  module.hot.accept('./routes.jsx', () => {
+  module.hot.accept('./routes.js', () => {
     setTimeout(hotRender);
   });
 }

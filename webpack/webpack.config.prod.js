@@ -8,15 +8,9 @@ const path = require('path');
 const APP_PATH = path.join(__dirname, '../app');
 const ASSETS_PATH = path.join(__dirname, '../public/assets');
 
-const commonExtensions = [
-  '',
-  '.js',
-  '.jsx',
-];
-
 const commonLoaders = [
   {
-    test: /\.js$|\.jsx$/,
+    test: /\.js$/,
     loader: 'babel',
     query: {
       // Read more: http://babeljs.io/docs/plugins/#presets
@@ -48,9 +42,6 @@ module.exports = [
     module: {
       loaders: commonLoaders,
     },
-    resolve: {
-      extensions: commonExtensions,
-    },
   },
   {
     // Server-side rendering configuration
@@ -68,9 +59,6 @@ module.exports = [
     },
     module: {
       loaders: commonLoaders,
-    },
-    resolve: {
-      extensions: commonExtensions,
     },
   },
 ];
