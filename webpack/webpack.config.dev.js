@@ -114,8 +114,8 @@ const server = {
         test: /\.css$/,
         include: APP_PATH,
         // Styles are rendered inline by client webpack and not in server application HTML,
-        // so compiled CSS bundle will become outdated during development,
-        // however app/server.js only includes CSS bundle link in production,
+        // so compiled CSS bundle will become outdated during development
+        // However, app/server.js only includes CSS bundle link in production,
         // meaning injected style tags are honoured solely (i.e. rules aren't doubled)
         loader: 'css',
       },

@@ -5,9 +5,7 @@ const webpack = require('webpack');
 
 const app = express();
 
-const DEV_MODE = process.env.NODE_ENV === 'development';
-
-if (DEV_MODE) {
+if (process.env.NODE_ENV === 'development') {
   const WebpackDevMiddleware = require('webpack-dev-middleware');
   const WebpackHotMiddleware = require('webpack-hot-middleware');
   const config = require('../webpack/webpack.config.dev.js');
@@ -32,6 +30,6 @@ if (DEV_MODE) {
 
 // Bootstrap application settings and routes
 require('./config/express')(app);
-require('./config/routes')(app, DEV_MODE);
+require('./config/routes')(app);
 
 app.listen(app.get('port'));
