@@ -1,0 +1,12 @@
+/* PostCSS simple vars */
+@value text-color: black;
+
+header {
+  display: flex; /* PostCSS will autoprefix this */
+
+  /* PostCSS will unwrap nested rules */
+  a {
+    color: text-color;
+    text-decoration: none;
+  }
+}

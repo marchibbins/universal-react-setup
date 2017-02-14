@@ -10,6 +10,9 @@ const renderPage = renderedContent =>
   <html lang="en">
   <head>
     <title>Hello world</title>
+    ${process.env.NODE_ENV === 'production'
+      ? '<link rel="stylesheet" href="/assets/main.css">'
+      : /* Styles are loaded inline during development by JS modules */ ''}
   </head>
   <body>
     <div id="app">${renderedContent}</div>

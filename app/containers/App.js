@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 
+import styles from './App.css'; // eslint-disable-line
+
 const App = ({ children }) => ( // eslint-disable-line
   <div>
     <header>
