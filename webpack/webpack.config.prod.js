@@ -42,6 +42,7 @@ const commonLoaders = [
 const commonPlugins = [
   new webpack.optimize.OccurenceOrderPlugin(), // Assign module and chunk IDs by occurrence
   new webpack.NoErrorsPlugin(), // Don't compile assets when errors]
+  new webpack.optimize.DedupePlugin(),
   new ExtractTextPlugin('main.css'), // In production each CSS chunk is extracted to a separate CSS output ffile
   new webpack.optimize.UglifyJsPlugin({ // Minify Javascript
     compress: {
