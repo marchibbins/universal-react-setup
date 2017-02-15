@@ -1,6 +1,6 @@
 import React from 'react';
 
-const About = ({ children }) => ( // eslint-disable-line
+const About = () => (
   <div>
     <h1>About</h1>
   </div>

@@ -1,11 +1,13 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import { Provider } from 'react-redux';
 import { RouterContext, match } from 'react-router';
 
+import configureStore from './store/configureStore';
 import routes from './routes';
 
 // Base HTML template file, with injected rendered React content
-const renderPage = renderedContent =>
+const renderPage = (renderedContent, initialState) =>
   `<!DOCTYPE html>
   <html lang="en">
   <head>
@@ -16,12 +18,17 @@ const renderPage = renderedContent =>
   </head>
   <body>
     <div id="app">${renderedContent}</div>
+    <script type="text/javascript">window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};</script>
     <script type="text/javascript" src="/assets/bundle.js"></script>
   </body>
   </html>`;
 
 // Export a rendering function to be used by the Express server
 module.exports = (req, res) => {
+  const store = configureStore({
+    reducer: {},
+  });
+
   // Match a set of routes to a location, callback returns three arguments
   // - error: a javascript Error object if an error occured
   // - redirectLocation: a Location object if the route is a redirect
@@ -36,8 +43,14 @@ module.exports = (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       // Success, render application server-side (to string) with Router context
-      const componentHTML = renderToString(<RouterContext {...renderProps} />);
-      res.status(200).end(renderPage(componentHTML));
+      const App = (
+        <Provider store={store}>
+          <RouterContext {...renderProps} />
+        </Provider>
+      );
+      const componentHTML = renderToString(App);
+      const initialState = store.getState();
+      res.status(200).end(renderPage(componentHTML, initialState));
     } else {
       // No matches were found
       res.status(404).send('Not Found');
