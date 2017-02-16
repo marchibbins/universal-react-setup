@@ -25,9 +25,7 @@ const renderPage = (renderedContent, initialState) =>
 
 // Export a rendering function to be used by the Express server
 module.exports = (req, res) => {
-  const store = configureStore({
-    reducer: {},
-  });
+  const store = configureStore();
 
   // Match a set of routes to a location, callback returns three arguments
   // - error: a javascript Error object if an error occured
