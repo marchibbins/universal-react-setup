@@ -33,6 +33,10 @@ const commonLoaders = [
       ],
     },
   },
+  {
+    test: /\.json$/,
+    loader: 'json-loader',
+  },
 ];
 
 // Plugins used by both client and server builds

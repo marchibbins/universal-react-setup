@@ -1,7 +1,8 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 import { Provider } from 'react-redux';
-import { RouterContext, match } from 'react-router';
+import { match } from 'react-router';
+import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import configureStore from './store/configureStore';
 import routes from './routes';
@@ -41,14 +42,17 @@ module.exports = (req, res) => {
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
       // Success, render application server-side (to string) with Router context
-      const App = (
-        <Provider store={store}>
-          <RouterContext {...renderProps} />
-        </Provider>
-      );
-      const componentHTML = renderToString(App);
-      const initialState = store.getState();
-      res.status(200).end(renderPage(componentHTML, initialState));
+      loadOnServer({ ...renderProps, store }).then(() => { // Resolve all asyncConnect promises
+        // ReduxAsyncConnect returns RouterContext
+        const App = () => (
+          <Provider store={store}>
+            <ReduxAsyncConnect {...renderProps} />
+          </Provider>
+        );
+        const componentHTML = renderToString(<App />);
+        const initialState = store.getState();
+        res.status(200).end(renderPage(componentHTML, initialState));
+      });
     } else {
       // No matches were found
       res.status(404).send('Not Found');

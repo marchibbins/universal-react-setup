@@ -4,6 +4,7 @@ import React from 'react';
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 import { Router, browserHistory } from 'react-router';
+import { ReduxAsyncConnect } from 'redux-async-connect';
 
 import configureStore from './store/configureStore';
 
@@ -16,10 +17,10 @@ const renderApp = () => {
   // Require routes within block scope (see hot reloading below)
   const routes = require('./routes');
 
-  // Client application uses Router component and browser history
+  // Client application uses Router component, browser history and Redux async middleware
   const App = () => (
     <Provider store={store}>
-      <Router history={browserHistory}>
+      <Router history={browserHistory} render={props => <ReduxAsyncConnect {...props} />}>
         {routes}
       </Router>
     </Provider>

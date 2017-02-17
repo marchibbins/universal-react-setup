@@ -5,6 +5,9 @@ const SERVER_BUILD_PATH = path.resolve(__dirname, '../../public/assets/server.js
 let renderApplication = require(SERVER_BUILD_PATH); // eslint-disable-line
 
 module.exports = (app) => {
+  // Dummy API route to test async called
+  app.get('/weather', (req, res) => res.json('Sunny'));
+
   // Send all requests to our server-side application handler, which will render our application
   // or respond appropriately otherwise, e.g. with redirections or error messages
   if (process.env.NODE_ENV === 'development') {

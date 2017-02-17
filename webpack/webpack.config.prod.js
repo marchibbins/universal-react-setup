@@ -37,6 +37,10 @@ const commonLoaders = [
     include: APP_PATH,
     loader: ExtractTextPlugin.extract('style-loader', 'css-loader?module!postcss-loader'),
   },
+  {
+    test: /\.json$/,
+    loader: 'json-loader',
+  },
 ];
 
 // Plugins used by both client and server builds
