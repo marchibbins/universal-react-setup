@@ -11,6 +11,7 @@ const App = ({ children, weather }) => (
     <header>
       <Link to="/">Home</Link>
       <Link to="/about">About</Link>
+      <Link to="/redirect">Redirect</Link>
     </header>
     <main>
       {children}

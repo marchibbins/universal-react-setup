@@ -51,10 +51,12 @@ module.exports = (req, res) => {
         );
         const componentHTML = renderToString(<App />);
         const initialState = store.getState();
-        res.status(200).end(renderPage(componentHTML, initialState));
+        // Determine status from route configuration
+        const routeStatus = renderProps.routes[renderProps.routes.length - 1].status || 200;
+        res.status(routeStatus).end(renderPage(componentHTML, initialState));
       });
     } else {
-      // No matches were found
+      // No matches were found (unreachable with 404 catch-all route)
       res.status(404).send('Not Found');
     }
   });
