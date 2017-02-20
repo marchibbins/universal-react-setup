@@ -2,12 +2,14 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router';
 import { asyncConnect } from 'redux-async-connect';
+import Helmet from 'react-helmet';
 
 import { getWeather } from '../actions';
 import styles from './App.css'; // eslint-disable-line
 
 const App = ({ children, weather }) => (
   <div>
+    <Helmet title="Hello world" />
     <header>
       <Link to="/">Home</Link>
       <Link to="/about">About</Link>
