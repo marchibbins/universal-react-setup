@@ -6,23 +6,11 @@ import { ReduxAsyncConnect, loadOnServer } from 'redux-async-connect';
 
 import configureStore from './store/configureStore';
 import routes from './routes';
+import Html from './containers/Html';
 
 // Base HTML template file, with injected rendered React content
-const renderPage = (renderedContent, initialState) =>
-  `<!DOCTYPE html>
-  <html lang="en">
-  <head>
-    <title>Hello world</title>
-    ${process.env.NODE_ENV === 'production'
-      ? '<link rel="stylesheet" href="/assets/styles.css">'
-      : /* Styles are loaded inline during development by JS modules */ ''}
-  </head>
-  <body>
-    <div id="app">${renderedContent}</div>
-    <script type="text/javascript">window.__INITIAL_STATE__ = ${JSON.stringify(initialState)};</script>
-    <script type="text/javascript" src="/assets/bundle.js"></script>
-  </body>
-  </html>`;
+const render = (componentHTML, initialState) =>
+  `<!DOCTYPE html>\n${renderToString(<Html componentHTML={componentHTML} initialState={initialState} />)}`;
 
 // Export a rendering function to be used by the Express server
 module.exports = (req, res) => {
@@ -53,7 +41,7 @@ module.exports = (req, res) => {
         const initialState = store.getState();
         // Determine status from route configuration
         const routeStatus = renderProps.routes[renderProps.routes.length - 1].status || 200;
-        res.status(routeStatus).end(renderPage(componentHTML, initialState));
+        res.status(routeStatus).end(render(componentHTML, initialState));
       });
     } else {
       // No matches were found (unreachable with 404 catch-all route)
