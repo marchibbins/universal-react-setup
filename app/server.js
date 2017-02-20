@@ -14,8 +14,6 @@ const render = (componentHTML, initialState) =>
 
 // Export a rendering function to be used by the Express server
 module.exports = (req, res) => {
-  const store = configureStore();
-
   // Match a set of routes to a location, callback returns three arguments
   // - error: a javascript Error object if an error occured
   // - redirectLocation: a Location object if the route is a redirect
@@ -29,6 +27,7 @@ module.exports = (req, res) => {
       // Redirection
       res.redirect(302, redirectLocation.pathname + redirectLocation.search);
     } else if (renderProps) {
+      const store = configureStore();
       // Success, render application server-side (to string) with Router context
       loadOnServer({ ...renderProps, store }).then(() => { // Resolve all asyncConnect promises
         // ReduxAsyncConnect returns RouterContext
